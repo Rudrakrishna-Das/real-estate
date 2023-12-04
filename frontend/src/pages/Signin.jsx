@@ -6,6 +6,7 @@ import {
   signinStart,
   signinSuccess,
 } from "../redux/user/userSlice";
+import OAuth from "../components/oAuth";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({});
@@ -41,6 +42,7 @@ const SignIn = () => {
       signinFailure(err.message);
     }
   };
+
   return (
     <section className="p-3 max-w-lg mx-auto">
       <h1 className="text-center text-3xl font-semibold my-7">Sign In</h1>
@@ -61,10 +63,12 @@ const SignIn = () => {
         />
         <button
           disabled={loading}
-          className="bg-blue-700 p-2 text-white rounded-md text-xl mt-2 hover:opacity-90 disabled:opacity-80 disabled:bg-slate-400"
+          className="bg-blue-700 p-2 text-white rounded-md text-xl mt-2 hover:opacity-90 uppercase disabled:opacity-80 disabled:bg-slate-400"
         >
           {loading ? "loading...." : "Sign In"}
         </button>
+
+        <OAuth />
       </form>
       {error && <p className={`text-red-700 text-xs mt-3`}>{error}</p>}
       <p className="my-3">
