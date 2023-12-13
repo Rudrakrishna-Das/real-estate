@@ -1,19 +1,28 @@
 import { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   getDownloadURL,
   getStorage,
   ref,
   uploadBytesResumable,
 } from "firebase/storage";
+
+import {
+  updateUserStart,
+  updateUserSuccess,
+  updateUserFailure,
+} from "../redux/user/userSlice";
+
 import { app } from "../firebase";
 const Profile = () => {
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser, loading, error } = useSelector((state) => state.user);
   const fileRef = useRef(null);
   const [file, setFile] = useState(undefined);
   const [formData, setFormData] = useState({});
   const [fileUploaded, setFileUploaded] = useState(0);
   const [fileUploadError, setFileUploadError] = useState(null);
+  const [updateSuccess, setUpdateSuccess] = useState(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (file) {
@@ -45,10 +54,39 @@ const Profile = () => {
     );
   };
 
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  };
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    dispatch(updateUserStart());
+    try {
+      const res = await fetch(`/api/user/update/${currentUser._id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(updateUserFailure(data.message));
+        return;
+      }
+
+      dispatch(updateUserSuccess(data));
+      setUpdateSuccess(true);
+    } catch (error) {
+      dispatch(updateUserFailure(error.message));
+    }
+  };
+  console.log(error);
   return (
     <section className="max-w-lg mx-auto">
       <h1 className="text-3xl font-bold text-center my-7">Profile</h1>
-      <form className="flex flex-col gap-4 ">
+      <form onSubmit={submitHandler} className="flex flex-col gap-4 ">
         <input
           onChange={(e) => setFile(e.target.files[0])}
           type="file"
@@ -65,7 +103,9 @@ const Profile = () => {
         <p className="text-sm text-center font-extrabold">
           {" "}
           {fileUploadError ? (
-            <span className="text-red-700">Failed Image Upload</span>
+            <span className="text-red-700">
+              Error image upload(Image must be less than 2 mb)
+            </span>
           ) : fileUploaded > 1 && fileUploaded < 100 ? (
             <span className="text-slate-700">{`Image uploading ${fileUploaded}%`}</span>
           ) : fileUploaded === 100 && !fileUploadError ? (
@@ -79,25 +119,37 @@ const Profile = () => {
           type="text"
           id="username"
           placeholder="Username"
+          defaultValue={currentUser.userName}
+          onChange={handleChange}
           className="p-2 rounded-lg bg-slate-300"
         />
         <input
           type="email"
           id="email"
           placeholder="Email"
+          defaultValue={currentUser.email}
+          onChange={handleChange}
           className="p-2 rounded-lg bg-slate-300"
         />
         <input
           type="text"
           id="password"
           placeholder="Password"
+          onChange={handleChange}
           className="p-2 rounded-lg bg-slate-300"
         />
-        <button className="bg-blue-700 p-2 text-white text-lg font-semibold rounded-lg hover:opacity-95 disabled:opacity-75 disabled:bg-slate-300 disabled:cursor-not-allowed">
-          UPDATE
+        <button
+          disabled={loading}
+          className="bg-blue-700 p-2 text-white text-lg font-semibold rounded-lg hover:opacity-95 disabled:opacity-75 disabled:bg-slate-300 disabled:cursor-not-allowed"
+        >
+          {loading ? "LOADING..." : "UPDATE"}
         </button>
       </form>
-      <div className="flex justify-between mt-5 text-red-800 font-semibold">
+      <p className="mt-3 text-red-800 font-semibold">{error ? error : ""}</p>
+      <p className="mt-3 text-green-800 font-semibold">
+        {updateSuccess ? "Profile updated successfully" : ""}
+      </p>
+      <div className="flex justify-between mt-7 text-red-800 font-semibold">
         <span className="cursor-pointer hover:opacity-95">Delete Account</span>
         <span className="cursor-pointer hover:opacity-95">Sign Out</span>
       </div>

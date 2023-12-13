@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+const cookieParser = require("cookie-parser");
 
 // routers import
 const userRouter = require("./routes/user.route.js");
@@ -15,8 +16,13 @@ mongoose
 
 const app = express();
 
+//For JSON read
 app.use(express.json());
 
+//For Cookie read
+app.use(cookieParser());
+
+//Server Listen
 app.listen(3000, () => {
   console.log("Server running!!!");
 });
