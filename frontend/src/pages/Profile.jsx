@@ -11,6 +11,11 @@ import {
   updateUserStart,
   updateUserSuccess,
   updateUserFailure,
+  deleteUserFailure,
+  deleteUserStart,
+  deleteUserSuccess,
+  signOutUserFailure,
+  signOutUserSuccess,
 } from "../redux/user/userSlice";
 
 import { app } from "../firebase";
@@ -82,7 +87,39 @@ const Profile = () => {
       dispatch(updateUserFailure(error.message));
     }
   };
-  console.log(error);
+  const deleteAccountHandler = async () => {
+    try {
+      dispatch(deleteUserStart());
+      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+        method: "DELETE",
+      });
+
+      const data = await res.json();
+
+      if (data.success === false) {
+        dispatch(deleteUserFailure(data.message));
+        return;
+      }
+
+      dispatch(deleteUserSuccess(data));
+    } catch (error) {
+      dispatch(deleteUserFailure(error.message));
+    }
+  };
+
+  const signoutHandler = async () => {
+    try {
+      const res = await fetch("/api/auth/signout");
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(signOutUserFailure(data.message));
+        return;
+      }
+      dispatch(signOutUserSuccess(data));
+    } catch (error) {
+      dispatch(signOutUserFailure(error.message));
+    }
+  };
   return (
     <section className="max-w-lg mx-auto">
       <h1 className="text-3xl font-bold text-center my-7">Profile</h1>
@@ -150,8 +187,18 @@ const Profile = () => {
         {updateSuccess ? "Profile updated successfully" : ""}
       </p>
       <div className="flex justify-between mt-7 text-red-800 font-semibold">
-        <span className="cursor-pointer hover:opacity-95">Delete Account</span>
-        <span className="cursor-pointer hover:opacity-95">Sign Out</span>
+        <span
+          onClick={deleteAccountHandler}
+          className="cursor-pointer hover:opacity-95"
+        >
+          Delete Account
+        </span>
+        <span
+          onClick={signoutHandler}
+          className="cursor-pointer hover:opacity-95"
+        >
+          Sign Out
+        </span>
       </div>
     </section>
   );
