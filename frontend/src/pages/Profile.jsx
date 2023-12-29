@@ -16,9 +16,11 @@ import {
   deleteUserSuccess,
   signOutUserFailure,
   signOutUserSuccess,
+  signOutUserStart,
 } from "../redux/user/userSlice";
 
 import { app } from "../firebase";
+import { Link } from "react-router-dom";
 const Profile = () => {
   const { currentUser, loading, error } = useSelector((state) => state.user);
   const fileRef = useRef(null);
@@ -108,6 +110,7 @@ const Profile = () => {
   };
 
   const signoutHandler = async () => {
+    dispatch(signOutUserStart());
     try {
       const res = await fetch("/api/auth/signout");
       const data = await res.json();
@@ -181,7 +184,14 @@ const Profile = () => {
         >
           {loading ? "LOADING..." : "UPDATE"}
         </button>
+        <Link
+          to={"/create-listing"}
+          className="bg-blue-700 p-2 text-center text-white text-xl font-semibold rounded-lg hover:opacity-95 "
+        >
+          Create Listing
+        </Link>
       </form>
+
       <p className="mt-3 text-red-800 font-semibold">{error ? error : ""}</p>
       <p className="mt-3 text-green-800 font-semibold">
         {updateSuccess ? "Profile updated successfully" : ""}

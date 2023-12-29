@@ -6,6 +6,7 @@ const cookieParser = require("cookie-parser");
 // routers import
 const userRouter = require("./routes/user.route.js");
 const authRouter = require("./routes/auth.route.js");
+const listRouter = require("./routes/list.route.js");
 
 dotenv.config();
 
@@ -30,6 +31,7 @@ app.listen(3000, () => {
 //User Routes
 app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/list", listRouter);
 
 //Error Route
 app.use((err, req, res, next) => {
