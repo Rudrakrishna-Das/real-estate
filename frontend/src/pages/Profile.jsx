@@ -29,6 +29,8 @@ const Profile = () => {
   const [fileUploaded, setFileUploaded] = useState(0);
   const [fileUploadError, setFileUploadError] = useState(null);
   const [updateSuccess, setUpdateSuccess] = useState(null);
+  const [userListingError, setUserListingError] = useState(null);
+  const [userListing, setUserListing] = useState([]);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -123,8 +125,22 @@ const Profile = () => {
       dispatch(signOutUserFailure(error.message));
     }
   };
+
+  const getListinghandler = async () => {
+    try {
+      setUserListingError(false);
+      const res = await fetch(`/api/user/listings/${currentUser._id}`);
+      const data = await res.json();
+      if (data.success === "false") {
+        setUserListingError(true);
+      }
+      setUserListing(data);
+    } catch (error) {
+      setUserListingError(true);
+    }
+  };
   return (
-    <section className="max-w-lg mx-auto">
+    <section className="max-w-lg mx-auto my-5">
       <h1 className="text-3xl font-bold text-center my-7">Profile</h1>
       <form onSubmit={submitHandler} className="flex flex-col gap-4 ">
         <input
@@ -210,6 +226,50 @@ const Profile = () => {
           Sign Out
         </span>
       </div>
+      <p className="text-red-700 font-semibold">
+        {userListingError ? "Listing Error" : ""}
+      </p>
+      <button
+        onClick={getListinghandler}
+        className="text-center text-green-700 font-semibold w-full"
+      >
+        Show Listings
+      </button>
+      <ul>
+        {userListing?.length > 0 && (
+          <div className="flex flex-col gap-4">
+            <h1 className="text-center mt-7 text-2xl font-bold">
+              Your Listings
+            </h1>
+            {userListing.map((list) => (
+              <div className="border px-3 flex justify-between">
+                <Link
+                  to={`/listing/${list._id}`}
+                  key={list._id}
+                  className=" flex gap-3 items-center rounded-lg"
+                >
+                  <img
+                    className="h-16 w-16 object-contain"
+                    src={list.imageUrls[0]}
+                    alt={list.name}
+                  />
+                  <h1 className="font-extrabold hover:underline truncate">
+                    {list.name}
+                  </h1>
+                </Link>
+                <div className="flex flex-col">
+                  <button className="text-red-800 font-semibold cursor-pointer">
+                    DELETE
+                  </button>
+                  <button className="text-green-800 font-semibold cursor-pointer">
+                    EDIT
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </ul>
     </section>
   );
 };
