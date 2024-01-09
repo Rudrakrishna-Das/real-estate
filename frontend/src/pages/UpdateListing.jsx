@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   getDownloadURL,
   getStorage,
@@ -7,11 +7,12 @@ import {
 } from "firebase/storage";
 import { app } from "../firebase";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-const Listing = () => {
+const UpdateListing = () => {
   const [files, setFiles] = useState([]);
   const navigate = useNavigate();
+  const params = useParams();
   const [formData, setFormData] = useState({
     imageUrls: [],
     name: "",
@@ -31,6 +32,20 @@ const Listing = () => {
   const [loading, setLoading] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const getListing = async () => {
+      const res = await fetch(`/api/list/get-list/${params.listingId}`);
+      const data = await res.json();
+      if (data.success === false) {
+        console.log(data.message);
+        return;
+      }
+
+      setFormData(data);
+    };
+    getListing();
+  }, []);
 
   const handleImageSubmit = () => {
     setUploading(true);
@@ -139,7 +154,7 @@ const Listing = () => {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch("/api/list/create-listing", {
+      const res = await fetch(`/api/list/update/${params.listingId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -162,7 +177,7 @@ const Listing = () => {
   };
   return (
     <main className="max-w-4xl mx-auto p-3">
-      <h1 className="font-bold text-3xl text-center py-3">Create a Listing</h1>
+      <h1 className="font-bold text-3xl text-center py-3">Update a Listing</h1>
       <form
         onSubmit={submitHandler}
         className="flex flex-col sm:flex-row gap-4"
@@ -372,7 +387,7 @@ const Listing = () => {
             disabled={loading || uploading}
             className="bg-blue-700 p-2 text-center text-white text-xl font-semibold rounded-lg hover:opacity-95 disabled:bg-slate-500 disabled:cursor-not-allowed"
           >
-            {loading ? "Creating...." : "Create Listing"}
+            {loading ? "Updating...." : "Update Listing"}
           </button>
           {error && (
             <p className={`text-red-700 text-xs mt-3 font-semibold`}>{error}</p>
@@ -383,4 +398,4 @@ const Listing = () => {
   );
 };
 
-export default Listing;
+export default UpdateListing;

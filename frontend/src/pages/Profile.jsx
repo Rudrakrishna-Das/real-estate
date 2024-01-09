@@ -139,6 +139,26 @@ const Profile = () => {
       setUserListingError(true);
     }
   };
+
+  const listingDeleteHandler = async (id) => {
+    try {
+      const res = await fetch(`/api/list/delete/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await res.json();
+      if (data.success === false) {
+        console.log(data.message);
+      }
+      setUserListing((prev) => prev.filter((listing) => listing._id !== id));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <section className="max-w-lg mx-auto my-5">
       <h1 className="text-3xl font-bold text-center my-7">Profile</h1>
@@ -242,10 +262,12 @@ const Profile = () => {
               Your Listings
             </h1>
             {userListing.map((list) => (
-              <div className="border px-3 flex justify-between">
+              <div
+                key={list._id}
+                className="border px-3 flex justify-between items-center"
+              >
                 <Link
                   to={`/listing/${list._id}`}
-                  key={list._id}
                   className=" flex gap-3 items-center rounded-lg"
                 >
                   <img
@@ -258,12 +280,18 @@ const Profile = () => {
                   </h1>
                 </Link>
                 <div className="flex flex-col">
-                  <button className="text-red-800 font-semibold cursor-pointer">
+                  <button
+                    onClick={() => listingDeleteHandler(list._id)}
+                    className="text-red-800 font-semibold cursor-pointer"
+                  >
                     DELETE
                   </button>
-                  <button className="text-green-800 font-semibold cursor-pointer">
+                  <Link
+                    to={`/update-listing/${list._id}`}
+                    className="text-green-800 font-semibold cursor-pointer"
+                  >
                     EDIT
-                  </button>
+                  </Link>
                 </div>
               </div>
             ))}
