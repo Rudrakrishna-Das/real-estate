@@ -6,8 +6,9 @@ import SignUp from "./pages/SignUp";
 import Profile from "./pages/Profile";
 import Navigation from "./components/Navigation";
 import PrivateRoute from "./components/PrivateRoute";
-import Listing from "./pages/Listing";
+import CreateListing from "./pages/CreateListing";
 import UpdateListing from "./pages/UpdateListing";
+import Listing from "./pages/Listing";
 function App() {
   return (
     <BrowserRouter>
@@ -17,11 +18,12 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="/about" element={<About />}></Route>
+        <Route path="/listing/:listingId" element={<Listing />}></Route>
         <Route path="/sign-up" element={<SignUp />}></Route>
         <Route path="/sign-in" element={<Signin />}></Route>
         <Route element={<PrivateRoute />}>
           <Route path="/profile" element={<Profile />}></Route>
-          <Route path="/create-listing" element={<Listing />}></Route>
+          <Route path="/create-listing" element={<CreateListing />}></Route>
           <Route
             path="/update-listing/:listingId"
             element={<UpdateListing />}
