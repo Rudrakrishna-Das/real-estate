@@ -110,12 +110,10 @@ const UpdateListing = () => {
   };
 
   const removeImageHandler = (index) => {
-    setUploading(true);
     setFormData({
       ...formData,
       imageUrls: formData.imageUrls.filter((url, i) => i !== index),
     });
-    setUploading(false);
   };
 
   const handleChange = (e) => {
@@ -149,7 +147,7 @@ const UpdateListing = () => {
     e.preventDefault();
     if (formData.imageUrls.length < 1)
       return setError("You must have to upload 1 image");
-    if (formData.regularPrice < formData.discountedPrice)
+    if (+formData.regularPrice < +formData.discountedPrice)
       return setError("Discounted Price must be lower than Regular Price");
     setLoading(true);
     setError(null);
@@ -378,7 +376,7 @@ const UpdateListing = () => {
                   disabled={uploading}
                   className="border-2 border-red-700 text-red-700 h-10 px-5 py-0 uppercase hover:translate-x-1 duration-500"
                 >
-                  {uploading ? "deleting..." : "Delete"}
+                  DELETE
                 </button>
               </div>
             ))}

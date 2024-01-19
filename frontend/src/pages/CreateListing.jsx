@@ -95,12 +95,10 @@ const CreateListing = () => {
   };
 
   const removeImageHandler = (index) => {
-    setUploading(true);
     setFormData({
       ...formData,
       imageUrls: formData.imageUrls.filter((url, i) => i !== index),
     });
-    setUploading(false);
   };
 
   const handleChange = (e) => {
@@ -132,10 +130,12 @@ const CreateListing = () => {
   };
   const submitHandler = async (e) => {
     e.preventDefault();
-    if (formData.imageUrls.length < 1)
+    if (formData.imageUrls.length < 1) {
       return setError("You must have to upload 1 image");
-    if (formData.regularPrice < formData.discountedPrice)
+    }
+    if (+formData.regularPrice < +formData.discountedPrice) {
       return setError("Discounted Price must be lower than Regular Price");
+    }
     setLoading(true);
     setError(null);
     try {
@@ -155,7 +155,6 @@ const CreateListing = () => {
       if (data.success === false) {
         setError(data.message);
       }
-      console.log(data);
       navigate(`/listing/${data._id}`);
     } catch (err) {
       setError(err.message);
@@ -293,7 +292,7 @@ const CreateListing = () => {
                 id="regularPrice"
                 onChange={handleChange}
                 value={formData.regularPrice}
-                className="p-3 w-16 rounded-lg border"
+                className="p-3 w-24 rounded-lg border"
               />
               <div className="flex flex-col items-center">
                 <p className="font-semibold text-sm"> Regular price</p>
@@ -308,7 +307,7 @@ const CreateListing = () => {
                   id="discountedPrice"
                   onChange={handleChange}
                   value={formData.discountedPrice}
-                  className="p-3 w-16 rounded-lg border"
+                  className="p-3 w-24 rounded-lg border"
                 />
                 <div className="flex flex-col items-center">
                   <p className="font-semibold text-sm"> Discounted price</p>
@@ -364,7 +363,7 @@ const CreateListing = () => {
                   disabled={uploading}
                   className="border-2 border-red-700 text-red-700 h-10 px-5 py-0 uppercase hover:translate-x-1 duration-500"
                 >
-                  {uploading ? "deleting..." : "Delete"}
+                  DELETE
                 </button>
               </div>
             ))}
