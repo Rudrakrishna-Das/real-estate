@@ -158,7 +158,6 @@ const Profile = () => {
       console.log(error);
     }
   };
-
   return (
     <section className="max-w-lg mx-auto my-5">
       <h1 className="text-3xl font-bold text-center my-7">Profile</h1>
