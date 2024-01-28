@@ -43,13 +43,11 @@ const Listing = () => {
     fetchList();
   }, []);
 
-  console.log(contact);
-
   return (
     <main>
-      {loading && <Loading />}
+      {loading && <Loading height={44} width={44} top={32} />}
       {error && (
-        <p className="text-center text-4xl mt-8 font-extrabold text text-red-700">
+        <p className="text-center text-4xl mt- font-extrabold text text-red-700">
           {" "}
           Something went wrong
         </p>
@@ -106,7 +104,8 @@ const Listing = () => {
               </p>
               {listing.offer && (
                 <p className="bg-green-900 shadow-green-950 shadow-md w-full max-w-[200px] text-white text-xl font-semibold text-center p-1 rounded-lg">
-                  rs{+listing.regularPrice - +listing.discountedPrice}
+                  rs {+listing.regularPrice - +listing.discountedPrice}{" "}
+                  <span className="text-sm text-blue-300">DISCOUNT</span>
                 </p>
               )}
             </div>

@@ -17,9 +17,8 @@ const Navigation = () => {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const searchTermFromURL = urlParams.get("searchTerm");
-    if (searchTermFromURL) {
-      setSearchTerm(searchTermFromURL);
-    }
+
+    setSearchTerm(searchTermFromURL === null ? "" : searchTermFromURL);
   }, [window.location.search]);
 
   return (

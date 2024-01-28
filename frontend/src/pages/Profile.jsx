@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { FaEye } from "react-icons/fa";
 import {
   getDownloadURL,
   getStorage,
@@ -21,6 +22,7 @@ import {
 
 import { app } from "../firebase";
 import { Link } from "react-router-dom";
+import Loading from "../components/Loading";
 const Profile = () => {
   const { currentUser, loading, error } = useSelector((state) => state.user);
   const fileRef = useRef(null);
@@ -31,6 +33,7 @@ const Profile = () => {
   const [updateSuccess, setUpdateSuccess] = useState(null);
   const [userListingError, setUserListingError] = useState(null);
   const [userListing, setUserListing] = useState([]);
+  const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -158,6 +161,9 @@ const Profile = () => {
       console.log(error);
     }
   };
+  const showPasswordHandler = () => {
+    setShowPassword((prevState) => !prevState);
+  };
   return (
     <section className="max-w-lg mx-auto my-5">
       <h1 className="text-3xl font-bold text-center my-7">Profile</h1>
@@ -207,7 +213,7 @@ const Profile = () => {
           className="p-2 rounded-lg bg-slate-300"
         />
         <input
-          type="text"
+          type={showPassword ? "text" : "password"}
           id="password"
           placeholder="Password"
           onChange={handleChange}
@@ -217,7 +223,7 @@ const Profile = () => {
           disabled={loading}
           className="bg-blue-700 p-2 text-white text-lg font-semibold rounded-lg hover:opacity-95 disabled:opacity-75 disabled:bg-slate-300 disabled:cursor-not-allowed"
         >
-          {loading ? "LOADING..." : "UPDATE"}
+          {loading ? <Loading height={10} width={10} top={0} /> : "UPDATE"}
         </button>
         <Link
           to={"/create-listing"}
@@ -226,6 +232,12 @@ const Profile = () => {
           Create Listing
         </Link>
       </form>
+      <button
+        onClick={showPasswordHandler}
+        className="relative -top-[9.5rem] -right-[90%] sm:-top-[9.5rem] sm:-right-[29rem] max-w-[100px]"
+      >
+        <FaEye className="text-xl hover:opacity-75" />
+      </button>
 
       <p className="mt-3 text-red-800 font-semibold">{error ? error : ""}</p>
       <p className="mt-3 text-green-800 font-semibold">
@@ -274,7 +286,7 @@ const Profile = () => {
                     src={list.imageUrls[0]}
                     alt={list.name}
                   />
-                  <h1 className="font-extrabold hover:underline truncate">
+                  <h1 className="font-extrabold hover:underline max-w-[12rem] truncate">
                     {list.name}
                   </h1>
                 </Link>

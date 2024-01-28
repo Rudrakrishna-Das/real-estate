@@ -1,14 +1,17 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { FaEye } from "react-icons/fa";
 import {
   signinFailure,
   signinStart,
   signinSuccess,
 } from "../redux/user/userSlice";
 import OAuth from "../components/oAuth";
+import Loading from "../components/Loading";
 
 const SignIn = () => {
+  const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({});
   const { error, loading } = useSelector((state) => state.user);
   const dispatch = useDispatch();
@@ -42,7 +45,9 @@ const SignIn = () => {
       signinFailure(err.message);
     }
   };
-
+  const showPasswordHandler = () => {
+    setShowPassword((prevState) => !prevState);
+  };
   return (
     <section className="p-3 max-w-lg mx-auto">
       <h1 className="text-center text-3xl font-semibold my-7">Sign In</h1>
@@ -55,7 +60,7 @@ const SignIn = () => {
           onChange={handleChange}
         />
         <input
-          type="text"
+          type={showPassword ? "text" : "password"}
           placeholder="Password"
           className="border p-2 rounded-md"
           id="password"
@@ -65,11 +70,18 @@ const SignIn = () => {
           disabled={loading}
           className="bg-blue-700 p-2 text-white rounded-md text-xl mt-2 hover:opacity-90 uppercase disabled:opacity-80 disabled:bg-slate-400"
         >
-          {loading ? "loading...." : "Sign In"}
+          {loading ? <Loading height={10} width={10} top={0} /> : "Sign In"}
         </button>
 
         <OAuth />
       </form>
+
+      <button
+        onClick={showPasswordHandler}
+        className="relative -top-[10rem] -right-[90%] sm:-top-[10rem] sm:-right-[28rem] max-w-[100px]"
+      >
+        <FaEye className="text-xl hover:opacity-75" />
+      </button>
       {error && <p className={`text-red-700 text-xs mt-3`}>{error}</p>}
       <p className="my-3">
         Dont have an account? {"  "}

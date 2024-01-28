@@ -66,17 +66,17 @@ exports.getListings = async (req, res, next) => {
   const startIndex = parseInt(req.query.startIndex) || 0;
 
   let offer = req.query.offer;
-  if (!offer) {
+  if (!offer || offer === "false") {
     offer = { $in: [false, true] };
   }
 
   let furnished = req.query.furnished;
-  if (!furnished) {
+  if (!furnished || furnished === "false") {
     furnished = { $in: [false, true] };
   }
 
   let parking = req.query.parking;
-  if (!parking) {
+  if (!parking || parking === "false") {
     parking = { $in: [false, true] };
   }
 
@@ -100,7 +100,6 @@ exports.getListings = async (req, res, next) => {
       .sort({ [sort]: order })
       .limit(limit)
       .skip(startIndex);
-
     return res.status(200).json(listings);
   } catch (error) {
     next(error);

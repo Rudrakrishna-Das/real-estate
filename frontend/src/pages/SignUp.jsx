@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { FaEye } from "react-icons/fa";
 import OAuth from "../components/oAuth";
+import Loading from "../components/Loading";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({});
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -38,6 +41,9 @@ const SignUp = () => {
       setError(err.message);
     }
   };
+  const showPasswordHandler = () => {
+    setShowPassword((prevState) => !prevState);
+  };
   return (
     <section className="p-3 max-w-lg mx-auto">
       <h1 className="text-center text-3xl font-semibold my-7">Sign Up</h1>
@@ -57,20 +63,29 @@ const SignUp = () => {
           onChange={handleChange}
         />
         <input
-          type="text"
+          type={showPassword ? "text" : "password"}
           placeholder="Password"
           className="border p-2 rounded-md"
           id="password"
           onChange={handleChange}
         />
+
         <button
           disabled={loading}
           className="bg-blue-700 p-2 text-white rounded-md text-xl mt-2 hover:opacity-90 disabled:opacity-80 uppercase disabled:bg-slate-400"
         >
-          {loading ? "loading...." : "Sign Up"}
+          {loading ? <Loading height={10} width={10} top={0} /> : "Sign Up"}
         </button>
         <OAuth />
       </form>
+
+      <button
+        onClick={showPasswordHandler}
+        className="relative -top-[10rem] -right-[90%] sm:-top-[10rem] sm:-right-[28rem] max-w-[100px]"
+      >
+        <FaEye className="text-xl hover:opacity-75" />
+      </button>
+
       {error && <p className={`text-red-700 text-xs mt-3`}>{error}</p>}
       <p className="my-3">
         Have an account? {"  "}
