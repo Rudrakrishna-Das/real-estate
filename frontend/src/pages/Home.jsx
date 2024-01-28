@@ -46,9 +46,7 @@ const Home = () => {
     };
     fetchOfferListing();
   }, []);
-  console.log(offerListings);
-  console.log(rentListings);
-  console.log(saleListings);
+
   return (
     <section className="p-6">
       {/* top */}
@@ -75,10 +73,9 @@ const Home = () => {
       <Swiper navigation>
         {offerListings?.length > 0 &&
           offerListings.map((listing) => (
-            <SwiperSlide>
+            <SwiperSlide key={listing._id}>
               <div
                 className="h-[550px]"
-                key={listing._id}
                 style={{
                   background: `url(${listing.imageUrls[0]}) center no-repeat`,
                   backgroundSize: "cover",
@@ -105,8 +102,8 @@ const Home = () => {
             </div>
             <ul className="flex flex-wrap gap-4 p-4">
               {offerListings.map((list) => (
-                <li>
-                  <ListingItems key={list._id} list={list} />
+                <li key={list._id}>
+                  <ListingItems list={list} />
                 </li>
               ))}
             </ul>
@@ -127,8 +124,8 @@ const Home = () => {
             </div>
             <ul className="flex flex-wrap gap-4 p-4">
               {rentListings.map((list) => (
-                <li>
-                  <ListingItems key={list._id} list={list} />
+                <li key={list._id}>
+                  <ListingItems list={list} />
                 </li>
               ))}
             </ul>
@@ -149,8 +146,8 @@ const Home = () => {
             </div>
             <ul className="flex flex-wrap gap-4 p-4">
               {saleListings.map((list) => (
-                <li>
-                  <ListingItems key={list._id} list={list} />
+                <li key={list._id}>
+                  <ListingItems list={list} />
                 </li>
               ))}
             </ul>
