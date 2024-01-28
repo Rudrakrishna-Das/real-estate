@@ -7,7 +7,7 @@ import {
   signinStart,
   signinSuccess,
 } from "../redux/user/userSlice";
-import OAuth from "../components/oAuth";
+import OAuth from "../components/OAuth";
 import Loading from "../components/Loading";
 
 const SignIn = () => {
