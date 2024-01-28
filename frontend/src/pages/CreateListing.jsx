@@ -8,7 +8,7 @@ import {
 import { app } from "../firebase";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import Loading from "../components/Loading";
+import SmallLoading from "../components/SmallLoading";
 
 const CreateListing = () => {
   const [files, setFiles] = useState([]);
@@ -341,11 +341,7 @@ const CreateListing = () => {
               onClick={handleImageSubmit}
               className="max-h-16 p-3 text-lg text-green-600 border-2 border-green-400 rounded-lg uppercase hover:shadow-lg disabled:text-gray-400 disabled:border-gray-400 disabled:cursor-not-allowed"
             >
-              {uploading ? (
-                <Loading height={10} width={10} top={0} />
-              ) : (
-                "UPLOAD"
-              )}
+              {uploading ? <SmallLoading /> : "UPLOAD"}
             </button>
           </div>
           <p className="text-sm text-red-700">
@@ -377,11 +373,7 @@ const CreateListing = () => {
             disabled={loading || uploading}
             className="bg-blue-700 p-2 text-center text-white text-xl font-semibold rounded-lg hover:opacity-95 disabled:bg-slate-500 disabled:cursor-not-allowed"
           >
-            {loading ? (
-              <Loading height={10} width={10} top={0} />
-            ) : (
-              "Create Listing"
-            )}
+            {loading ? <SmallLoading /> : "Create Listing"}
           </button>
           {error && (
             <p className={`text-red-700 text-xs mt-3 font-semibold`}>{error}</p>

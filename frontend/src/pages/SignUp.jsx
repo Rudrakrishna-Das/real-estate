@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaEye } from "react-icons/fa";
 import OAuth from "../components/OAuth";
-import Loading from "../components/Loading";
+import SmallLoading from "../components/SmallLoading";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({});
@@ -74,7 +74,7 @@ const SignUp = () => {
           disabled={loading}
           className="bg-blue-700 p-2 text-white rounded-md text-xl mt-2 hover:opacity-90 disabled:opacity-80 uppercase disabled:bg-slate-400"
         >
-          {loading ? <Loading height={10} width={10} top={0} /> : "Sign Up"}
+          {loading ? <SmallLoading /> : "Sign Up"}
         </button>
         <OAuth />
       </form>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Loading from "../components/Loading";
 import ListingItems from "../components/ListingItems";
+import BigLoading from "../components/BigLoading";
 
 const Search = () => {
   const navigate = useNavigate();
@@ -244,7 +244,7 @@ const Search = () => {
               No Listing Found!
             </p>
           )}
-          {loading && <Loading height={44} width={44} top={28} />}
+          {loading && <BigLoading />}
           {!loading && listing.length > 0 && (
             <ul className=" flex flex-wrap gap-4">
               {listing.map((list) => (

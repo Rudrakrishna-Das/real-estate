@@ -5,7 +5,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import SwiperCore from "swiper";
 import "swiper/css/bundle";
-import Loading from "../components/Loading";
 import {
   FaBath,
   FaBed,
@@ -16,6 +15,7 @@ import {
   FaShare,
 } from "react-icons/fa";
 import Contact from "../components/Contact";
+import BigLoading from "../components/BigLoading";
 
 const Listing = () => {
   SwiperCore.use([Navigation]);
@@ -45,7 +45,7 @@ const Listing = () => {
 
   return (
     <main>
-      {loading && <Loading height={44} width={44} top={32} />}
+      {loading && <BigLoading />}
       {error && (
         <p className="text-center text-4xl mt- font-extrabold text text-red-700">
           {" "}

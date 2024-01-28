@@ -22,7 +22,7 @@ import {
 
 import { app } from "../firebase";
 import { Link } from "react-router-dom";
-import Loading from "../components/Loading";
+import SmallLoading from "../components/SmallLoading";
 const Profile = () => {
   const { currentUser, loading, error } = useSelector((state) => state.user);
   const fileRef = useRef(null);
@@ -223,7 +223,7 @@ const Profile = () => {
           disabled={loading}
           className="bg-blue-700 p-2 text-white text-lg font-semibold rounded-lg hover:opacity-95 disabled:opacity-75 disabled:bg-slate-300 disabled:cursor-not-allowed"
         >
-          {loading ? <Loading height={10} width={10} top={0} /> : "UPDATE"}
+          {loading ? <SmallLoading /> : "UPDATE"}
         </button>
         <Link
           to={"/create-listing"}

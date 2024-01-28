@@ -8,7 +8,7 @@ import {
   signinSuccess,
 } from "../redux/user/userSlice";
 import OAuth from "../components/OAuth";
-import Loading from "../components/Loading";
+import SmallLoading from "../components/SmallLoading";
 
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -70,7 +70,7 @@ const SignIn = () => {
           disabled={loading}
           className="bg-blue-700 p-2 text-white rounded-md text-xl mt-2 hover:opacity-90 uppercase disabled:opacity-80 disabled:bg-slate-400"
         >
-          {loading ? <Loading height={10} width={10} top={0} /> : "Sign In"}
+          {loading ? <SmallLoading /> : "Sign In"}
         </button>
 
         <OAuth />

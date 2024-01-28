@@ -18,7 +18,6 @@ const Contact = ({ listing }) => {
     fetchLandlord();
   }, [listing.userRef]);
 
-  console.log(message);
   return (
     landlord && (
       <section className="flex flex-col gap-2">
