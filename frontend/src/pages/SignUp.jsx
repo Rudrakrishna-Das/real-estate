@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaEye } from "react-icons/fa";
-import OAuth from "../components/oAuth";
+import OAuth from "../components/OAuth";
 import Loading from "../components/Loading";
 
 const SignUp = () => {
